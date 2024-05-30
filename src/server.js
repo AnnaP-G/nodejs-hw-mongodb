@@ -5,8 +5,8 @@ import cors from 'cors';
 import contactsRouter from './routers/contacts.js';
 import { env } from './utils/env.js';
 import { ENV_VARS } from './constants/constants.js';
-import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware.js';
-import { notFoundMiddleware } from './middlewares/notFoundMiddleware.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 export const setupServer = () => {
   const app = express();
@@ -21,8 +21,8 @@ export const setupServer = () => {
 
   app.use(contactsRouter);
 
-  app.use('*', notFoundMiddleware);
-  app.use(errorHandlerMiddleware);
+  app.use('*', notFoundHandler);
+  app.use(errorHandler);
 
   const PORT = env(ENV_VARS.PORT, 3000);
   app.listen(PORT, () => {
