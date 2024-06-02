@@ -26,12 +26,10 @@ export const upsertContact = async (contactId, payload, options = {}) => {
     },
   );
 
-  if (!rawResult || !rawResult.value) return null;
-
-  return {
-    contactId: rawResult.value,
-    isNew: Boolean(rawResult?.lastErrorObject?.upserted),
-  };
+  if (!rawResult || !rawResult.value) {
+    return null;
+  }
+  return rawResult.value;
 };
 
 export const deleteContact = async (contactId) => {
