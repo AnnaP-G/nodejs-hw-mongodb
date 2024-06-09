@@ -12,8 +12,11 @@ import {
   updateContactSchema,
 } from '../validation/contacts.js';
 import { validateBody } from '../middlewares/validateBody.js';
+import { validateId } from '../middlewares/validateId.js';
 
 const contactsRouter = Router();
+
+contactsRouter.use('/contacts/:contactId', validateId('contactId'));
 
 contactsRouter.get('/contacts', ctrlWrapper(getContactsController));
 
