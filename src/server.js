@@ -18,15 +18,19 @@ export const setupServer = () => {
     }),
   );
   app.use(cors());
+
   app.use(pino({ transport: { target: 'pino-pretty' } }));
+
   app.use(cookieParser());
 
   app.use(rootRouter);
 
   app.use('*', notFoundHandler);
+
   app.use(errorHandler);
 
   const PORT = env(ENV_VARS.PORT, 3000);
+
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
