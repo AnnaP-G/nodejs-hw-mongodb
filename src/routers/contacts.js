@@ -12,10 +12,13 @@ import { validateBody } from '../middlewares/validateBody.js';
 import { validateId } from '../middlewares/validateId.js';
 import { createContactSchema } from '../validation/createContactsSchema.js';
 import { updateContactSchema } from '../validation/updateContactsSchema.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const contactsRouter = Router();
 
-contactsRouter.use('/:contactId', validateId('contactId'));
+contactsRouter.use('/:contactId', validateId('contactId'), authenticate);
+
+contactsRouter.use('/', authenticate);
 
 contactsRouter.get('/', ctrlWrapper(getContactsController));
 
