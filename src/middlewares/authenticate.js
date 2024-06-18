@@ -4,34 +4,39 @@ import { User } from '../db/models/user.js';
 
 export const authenticate = async (req, res, next) => {
   const authHeader = req.get('Authorization');
+
   if (!authHeader) {
-    return next(createHttpError(401, 'Auth header is not provided'));
+    next(createHttpError(401, 'Auth header is not provided'));
+    return;
   }
-  const [bearer, token] = authHeader.split(' ');
+
+  const bearer = authHeader.split(' ')[0];
+  const token = authHeader.split(' ')[1];
   if (bearer !== 'Bearer' || !token) {
-    return next(createHttpError(401, 'Auth header should be of bearer type'));
+    next(createHttpError(401, 'Auth header should be of bearer type'));
+    return;
   }
 
   const session = await Session.findOne({ accessToken: token });
-
   if (!session) {
-    return next(createHttpError(401, 'Session not found'));
+    next(createHttpError(401, 'Session not found'));
+    return;
   }
 
-  const isAccessTokenExpired =
-    new Date() > new Date(session.accessTokenValidUntil);
+  const isAccessTokenExpired = new Date() > session.accessTokenValidUntil;
 
   if (isAccessTokenExpired) {
-    return next(createHttpError(401, 'Access token expired'));
+    next(createHttpError(401, 'Access token expired'));
+    return;
   }
 
   const user = await User.findById(session.userId);
-
   if (!user) {
-    return next(
+    next(
       createHttpError(401, 'User associated with this session is not found'),
     );
+    return;
   }
   req.user = user;
-  return next();
+  next();
 };
