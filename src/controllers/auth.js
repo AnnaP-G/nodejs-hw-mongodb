@@ -12,7 +12,7 @@ export const registerUserController = async (req, res) => {
   res.json({
     status: 201,
     message: 'Successfully registered a user!',
-    data: { user },
+    data: user,
   });
 };
 
@@ -28,11 +28,9 @@ export const loginUserController = async (req, res) => {
   });
 };
 
-export const refreshUserSessionController = async (req, res) => {
-  const session = await refreshUserSession({
-    sessionId: req.cookies.sessionId,
-    refreshToken: req.cookies.refreshToken,
-  });
+export const refreshUserSessionController = async (req, res, next) => {
+  const { sessionId, refreshToken } = req.cookies;
+  const session = await refreshUserSession({ sessionId, refreshToken });
 
   setupSessionCookies(res, session);
 

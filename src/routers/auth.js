@@ -9,7 +9,6 @@ import {
 import { validateBody } from '../middlewares/validateBody.js';
 import { registerUserSchema } from '../validation/registerUsersSchema.js';
 import { loginUserSchema } from '../validation/loginUsersSchema.js';
-import { authenticate } from '../middlewares/authenticate.js';
 
 const authRouter = Router();
 
@@ -23,11 +22,8 @@ authRouter.post(
   validateBody(loginUserSchema),
   ctrlWrapper(loginUserController),
 );
-authRouter.post(
-  '/refresh',
-  // authenticate,
-  ctrlWrapper(refreshUserSessionController),
-);
-authRouter.post('/logout', authenticate, ctrlWrapper(logoutUserController));
+authRouter.post('/logout', ctrlWrapper(logoutUserController));
+
+authRouter.post('/refresh', ctrlWrapper(refreshUserSessionController));
 
 export default authRouter;

@@ -14,7 +14,7 @@ export const SORT_ORDER = {
 export const FIFTEEN_MINUTES = 1000 * 60 * 15;
 export const THIRTY_DAYS = 1000 * 60 * 60 * 24 * 30;
 
-export const ROLES = {
-  ADMIN: 'admin',
-  USER: 'user',
-};
+// export const ROLES = {
+//   ADMIN: 'admin',
+//   USER: 'user',
+// };

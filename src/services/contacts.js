@@ -13,7 +13,7 @@ export const getAllContacts = async ({
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
-  const contactsQuery = Contact.find();
+  const contactsQuery = Contact.find({ userId });
 
   if (filter.contactType) {
     contactsQuery.where('contactType').equals(filter.contactType);
@@ -23,13 +23,8 @@ export const getAllContacts = async ({
     contactsQuery.where('isFavourite').equals(filter.isFavourite);
   }
 
-  if (userId) {
-    contactsQuery.where({ userId: userId });
-  }
-
   const [contactsCount, contacts] = await Promise.all([
-    Contact.countDocuments(),
-    Contact.find(),
+    Contact.find({ userId }).countDocuments(),
     contactsQuery
       .skip(skip)
       .limit(limit)
@@ -46,7 +41,7 @@ export const getAllContacts = async ({
 };
 
 export const getContactById = async (contactId, userId) => {
-  const contact = await Contact.findById({ _id: contactId, userId: userId });
+  const contact = await Contact.findById({ _id: contactId, userId });
   return contact;
 };
 
@@ -83,7 +78,7 @@ export const upsertContact = async (
 export const deleteContact = async (contactId, userId) => {
   const contact = await Contact.findOneAndDelete({
     _id: contactId,
-    userId: userId,
+    userId,
   });
   return contact;
 };
