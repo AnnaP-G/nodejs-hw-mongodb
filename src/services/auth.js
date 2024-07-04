@@ -1,5 +1,8 @@
 import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
+import handlebars from 'handlebars';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 import { User } from '../db/models/user.js';
 import bcrypt from 'bcrypt';
 import { Session } from '../db/models/session.js';
@@ -77,19 +80,30 @@ export const reqResetToken = async (email) => {
     },
   );
 
+  const resetPasswordTemplatePath = path.join(
+    process.cwd(),
+    'src',
+    'templates',
+    'reset-password-email.html',
+  );
+
+  const templateSourse = (
+    await fs.readFile(resetPasswordTemplatePath)
+  ).toString();
+
+  const template = handlebars.compile(templateSourse);
+
+  const html = template({
+    name: user.name,
+    link: `${env(ENV_VARS.APP_DOMAIN)}/reset-password?token=${resetToken}`,
+  });
+
   try {
     await sendMail({
       from: env(ENV_VARS.SMTP_FROM),
       to: email,
       subject: 'Reset your password',
-      html: `
-      <h1>Hello</h1>
-      <p>
-      Here is your reset link <a href="${env(
-        ENV_VARS.APP_DOMAIN,
-      )}/reset-password?token=${resetToken}">Link</a>
-      </p>
-      `,
+      html,
     });
   } catch (error) {
     console.log(error);
@@ -121,5 +135,4 @@ export const resetPassword = async ({ token, password }) => {
     },
     { password: hashedPassword },
   );
-  // if (!user) throw createHttpError(404, 'User not found!');
 };
