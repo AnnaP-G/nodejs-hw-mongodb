@@ -83,13 +83,13 @@ export const reqResetToken = async (email) => {
       to: email,
       subject: 'Reset your password',
       html: `
-    <h1>Hello</h1>
-    <p>
-    Here is your reset link <a href="${env(
-      ENV_VARS.APP_DOMAIN,
-    )}/reset-password?token=${resetToken}">Link</a>
-    </p>
-    `,
+      <h1>Hello</h1>
+      <p>
+      Here is your reset link <a href="${env(
+        ENV_VARS.APP_DOMAIN,
+      )}/reset-password?token=${resetToken}">Link</a>
+      </p>
+      `,
     });
   } catch (error) {
     console.log(error);
@@ -99,4 +99,27 @@ export const reqResetToken = async (email) => {
       'Failed to send the email, please try again later.',
     );
   }
+};
+
+export const resetPassword = async ({ token, password }) => {
+  let tokenPayload;
+  try {
+    tokenPayload = jwt.verify(token, env(ENV_VARS.JWT_SECRET));
+  } catch (error) {
+    if (error instanceof Error) {
+      throw createHttpError(401, 'Token is expired or invalid.');
+    }
+    throw error;
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await User.findOneAndUpdate(
+    {
+      id: tokenPayload.sub,
+      email: tokenPayload.email,
+    },
+    { password: hashedPassword },
+  );
+  // if (!user) throw createHttpError(404, 'User not found!');
 };
