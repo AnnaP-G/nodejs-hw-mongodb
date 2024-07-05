@@ -34,6 +34,7 @@ contactsRouter.post(
 
 contactsRouter.patch(
   '/:contactId',
+  // upload.single('photo'),
   validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );

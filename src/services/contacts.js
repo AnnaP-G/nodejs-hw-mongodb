@@ -52,13 +52,13 @@ export const createContact = async (payload, userId) => {
 
 export const upsertContact = async (
   contactId,
-  payload,
+  { photo, ...payload },
   userId,
   options = {},
 ) => {
   const rawResult = await Contact.findOneAndUpdate(
     { _id: contactId, userId },
-    payload,
+    { ...payload, photo },
     {
       new: true,
       includeResultMetadata: true,
