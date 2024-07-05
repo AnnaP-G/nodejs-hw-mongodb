@@ -87,15 +87,15 @@ export const reqResetToken = async (email) => {
     'reset-password-email.html',
   );
 
-  const templateSourse = (
+  const templateSource = (
     await fs.readFile(resetPasswordTemplatePath)
   ).toString();
 
-  const template = handlebars.compile(templateSourse);
+  const template = handlebars.compile(templateSource);
 
   const html = template({
     name: user.name,
-    link: `${env(ENV_VARS.APP_DOMAIN)}/reset-password?token=${resetToken}`,
+    link: `${env(ENV_VARS.APP_DOMAIN)}/reset-pwd?token=${resetToken}`,
   });
 
   try {
@@ -130,7 +130,7 @@ export const resetPassword = async ({ token, password }) => {
 
   await User.findOneAndUpdate(
     {
-      id: tokenPayload.sub,
+      _id: tokenPayload.sub,
       email: tokenPayload.email,
     },
     { password: hashedPassword },

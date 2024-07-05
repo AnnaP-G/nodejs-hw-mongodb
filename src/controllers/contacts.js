@@ -9,6 +9,7 @@ import {
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortOrder.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -47,11 +48,17 @@ export const getContactByIdController = async (req, res, next) => {
 };
 
 export const createContactController = async (req, res, next) => {
+  const fileUrl = await saveFileToCloudinary(req.file);
+
   if (!req.body.name || !req.body.phoneNumber) {
     next(createHttpError(400, 'Name and phoneNumber are required.'));
     return;
   }
-  const contact = await createContact(req.body, req.user._id);
+
+  const contact = await createContact(
+    { ...req.body, photo: fileUrl },
+    req.user._id,
+  );
 
   res.status(201).json({
     status: 201,

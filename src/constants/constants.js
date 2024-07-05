@@ -13,6 +13,9 @@ export const ENV_VARS = {
   SMTP_FROM: 'SMTP_FROM',
   JWT_SECRET: 'JWT_SECRET',
   APP_DOMAIN: 'APP_DOMAIN',
+  CLOUDINARY_NAME: 'CLOUDINARY_NAME',
+  CLOUDINARY_API_KEY: 'CLOUDINARY_API_KEY',
+  CLOUDINARY_API_SECRET: 'CLOUDINARY_API_SECRET',
 };
 
 export const SORT_ORDER = {
@@ -22,3 +25,6 @@ export const SORT_ORDER = {
 
 export const FIFTEEN_MINUTES = 1000 * 60 * 15;
 export const THIRTY_DAYS = 1000 * 60 * 60 * 24 * 30;
+
+export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
+// export const UPLOAD_DIR = path.join(process.cwd(), 'upload');
