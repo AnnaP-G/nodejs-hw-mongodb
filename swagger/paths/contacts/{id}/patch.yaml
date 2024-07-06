@@ -1,0 +1,71 @@
+tags:
+  - Contacts
+summary: Patch contact by id
+operationId: patchContact
+description: Patch contact by id
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: '668960e14df8e8fd55e56b39'
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+          email:
+            type: string
+            format: email
+          phone:
+            type: string
+          photo:
+            type: string
+            format: binary
+        required:
+          - name
+          - email
+          - phone
+responses:
+  '200':
+    description: Successfully updated contact
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 200
+            data:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: '668960e14df8e8fd55e56b39'
+                name:
+                  type: string
+                  example: 'Pontius Pilate'
+                email:
+                  type: string
+                  example: 'Pontius@example.com'
+                phone:
+                  type: string
+                  example: '+380314159265'
+                photo:
+                  type: string
+                  example: 'https://res.cloudinary.com/dnrylskyq/image/upload/v1720275725/ekihrqdhktaoicsqflfp.jpg'
+            message:
+              type: string
+              example: Successfully patched contact!
+  '401':
+    $ref: '../../../components/responses/401.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'

@@ -1,0 +1,24 @@
+type: object
+required:
+  - name
+  - email
+  - password
+properties:
+  _id:
+    type: string
+    example: '6689530d4df8e8fd55e56b2f'
+  name:
+    type: string
+    example: 'Pontius Pilate'
+  email:
+    type: string
+    example: 'Pontius@example.com'
+  password:
+    type: string
+    example: '314159265'
+  createdAt:
+    type: string
+    example: '2024-07-06T15:21:05.730Z'
+  updatedAt:
+    type: string
+    example: '2024-07-06T15:21:05.730Z'
