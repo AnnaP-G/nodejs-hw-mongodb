@@ -8,6 +8,7 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import rootRouter from './routers/index.js';
 import cookieParser from 'cookie-parser';
+import { swaggerDocs } from './middlewares/swagger.js';
 
 export const setupServer = () => {
   const app = express();
@@ -20,6 +21,8 @@ export const setupServer = () => {
   app.use(cors());
 
   // app.use(pino({ transport: { target: 'pino-pretty' } }));
+
+  app.use('/api-docs', swaggerDocs());
 
   app.use(cookieParser());
 

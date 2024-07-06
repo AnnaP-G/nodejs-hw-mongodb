@@ -28,3 +28,5 @@ export const THIRTY_DAYS = 1000 * 60 * 60 * 24 * 30;
 
 export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
 // export const UPLOAD_DIR = path.join(process.cwd(), 'upload');
+
+export const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.json');

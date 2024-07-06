@@ -1,6 +1,6 @@
 tags:
   - register
-summary: Create a user
+summary: Create an user
 operationId: createUser
 description: 'Create a new user'
 security:

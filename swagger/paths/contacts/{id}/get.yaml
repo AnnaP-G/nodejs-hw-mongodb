@@ -1,7 +1,7 @@
 # swagger/paths/studens/{id}/get.yaml
 tags:
   - Contacts
-summary: Get student by id
+summary: Get contact by id
 operationId: getContact
 description: 'Get contact by id'
 security:
